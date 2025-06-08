@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:17
+    container_name: postgres-container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+
+  fithead:
+    build: .
+    container_name: fithead
+    environment:
+      DB_HOST: postgres
+      DB_USER: postgres
+      DB_PASSWORD: password
+      DB_NAME: postgres
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
