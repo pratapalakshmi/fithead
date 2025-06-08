@@ -15,6 +15,7 @@ RUN apt-get update \
        libpq-dev \
        build-essential \
        libssl-dev \
+       postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
@@ -30,7 +31,6 @@ EXPOSE 5000
 
 # Set environment variables for Flask
 ENV FLASK_APP=run.py
-ENV FLASK_RUN_HOST=0.0.0.0
 
 # Run the Flask app
-CMD ["flask", "run"] 
+CMD ["/bin/sh", "-c", "flask db init && flask db migrate -m 'Initial migration' && flask db upgrade && flask run"]
