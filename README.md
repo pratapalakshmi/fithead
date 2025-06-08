@@ -1,4 +1,6 @@
 # FitHead
+<img width="559" alt="image" src="https://github.com/user-attachments/assets/b2780ac3-abce-40cf-8bbf-915e10d9fb1d" />
+
 ## Setup Instructions
 
 ### Prerequisites
