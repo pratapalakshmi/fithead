@@ -10,7 +10,7 @@ def create_app():
 
     # Database configuration
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
-        'DATABASE_URL', 'postgresql://postgres:password@localhost:5432/fithead')
+        'DATABASE_URL', 'postgresql://postgres:password@localhost:5432/postgres')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)

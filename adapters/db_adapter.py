@@ -1,7 +1,13 @@
 from flask_sqlalchemy import SQLAlchemy
-from app.models import User, Workout, WorkoutPlan, WorkoutPlanExercise
+from app import models
+from app import utils
+import time
 
 db = SQLAlchemy()
+
+
+def get_db_model(model_name):
+    return getattr(models, model_name)
 
 
 def init_db(app):
@@ -22,21 +28,25 @@ def get_db_engine():
     return db.engine
 
 
-def get_db_model(model_name):
-    return getattr(db, model_name)
-
-
 def insert_user_data(user_data):
-    user = User(
+    user = models.User(
         id=user_data['id'],
         username=user_data['username'],
         email=user_data['email'],
         age=user_data['age'],
+        gender=user_data['gender'],
+        location=user_data['location'],
+        interests=user_data['interests'],
+        bio=user_data['bio'],
+        profile_picture=user_data['profile_picture'],
+        created_at=utils.get_current_timestamp(),
+        updated_at=utils.get_current_timestamp(),
     )
+    return user
 
 
 def insert_workout_data(workout_data):
-    workout = Workout(
+    workout = models.Workout(
         id=workout_data['id'],
         user_id=workout_data['user_id'],
         workout_type=workout_data['workout_type'],
@@ -53,7 +63,7 @@ def insert_workout_plan_data(workout_plan_data):
 
 
 def insert_workout_plan_exercise_data(workout_plan_exercise_data):
-    workout_plan_exercise = WorkoutPlanExercise(
+    workout_plan_exercise = models.WorkoutPlanExercise(
         id=workout_plan_exercise_data['id'],
         workout_plan_id=workout_plan_exercise_data['workout_plan_id'],
         exercise_name=workout_plan_exercise_data['exercise_name'],
@@ -61,22 +71,23 @@ def insert_workout_plan_exercise_data(workout_plan_exercise_data):
 
 
 def get_user_data(user_id):
-    user = User.query.filter_by(id=user_id).first()
+    user = models.User.query.filter_by(id=user_id).first()
     return user
 
 
 def get_workout_data(workout_id):
-    workout = Workout.query.filter_by(id=workout_id).first()
+    workout = models.Workout.query.filter_by(id=workout_id).first()
     return workout
 
 
 def get_workout_plan_data(workout_plan_id):
-    workout_plan = WorkoutPlan.query.filter_by(id=workout_plan_id).first()
+    workout_plan = models.WorkoutPlan.query.filter_by(
+        id=workout_plan_id).first()
     return workout_plan
 
 
 def get_workout_plan_exercise_data(workout_plan_exercise_id):
-    workout_plan_exercise = WorkoutPlanExercise.query.filter_by(
+    workout_plan_exercise = models.WorkoutPlanExercise.query.filter_by(
         id=workout_plan_exercise_id).first()
     return workout_plan_exercise
 

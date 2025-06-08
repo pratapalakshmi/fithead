@@ -1,8 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
-
-# Example model
+from adapters.db_adapter import db
 
 
 def default_repr(self): return f"<{self.__class__.__name__} id={self.id}>"
@@ -18,8 +15,8 @@ class User(db.Model):
     interests = db.Column(db.String(255), nullable=False)
     bio = db.Column(db.String(255), nullable=False)
     profile_picture = db.Column(db.String(255), nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False)
-    updated_at = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.Integer, nullable=False)
+    updated_at = db.Column(db.Integer, nullable=False)
     __repr__ = default_repr
 
 
@@ -33,11 +30,11 @@ class Workout(db.Model):
     workout_reps = db.Column(db.Integer, nullable=False)
     workout_sets = db.Column(db.Integer, nullable=False)
     workout_weight = db.Column(db.Float, nullable=False)
-    workout_date = db.Column(db.DateTime, nullable=False)
+    workout_date = db.Column(db.Integer, nullable=False)
     workout_duration = db.Column(db.Integer, nullable=False)
     workout_calories = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False)
-    updated_at = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.Integer, nullable=False)
+    updated_at = db.Column(db.Integer, nullable=False)
     __repr__ = default_repr
 
 
@@ -50,8 +47,8 @@ class WorkoutPlan(db.Model):
     workout_plan_exercises = db.Column(db.String(255), nullable=False)
     workout_plan_duration = db.Column(db.Integer, nullable=False)
     workout_plan_calories = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False)
-    updated_at = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.Integer, nullable=False)
+    updated_at = db.Column(db.Integer, nullable=False)
     __repr__ = default_repr
 
 
@@ -66,6 +63,6 @@ class WorkoutPlanExercise(db.Model):
     exercise_weight = db.Column(db.Float, nullable=False)
     exercise_duration = db.Column(db.Integer, nullable=False)
     exercise_calories = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False)
-    updated_at = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.Integer, nullable=False)
+    updated_at = db.Column(db.Integer, nullable=False)
     __repr__ = default_repr
