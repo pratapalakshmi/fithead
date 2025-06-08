@@ -34,3 +34,38 @@
 - For development, you can modify the source code and restart the containers as needed.
 
 For any issues, please refer to the project documentation or open an issue in the repository.
+
+### Reference API
+
+### Get info.
+```bash
+curl --request GET \
+  --url http://localhost:5001/about \
+  --header 'User-Agent: insomnia/11.2.0'
+
+```
+
+<img width="875" alt="image" src="https://github.com/user-attachments/assets/1b055d28-aedc-4906-b4af-a8ac75a9f747" />
+
+
+### Create an user
+```bash
+curl --request POST \
+  --url http://localhost:5001/users/insert \
+  --header 'Content-Type: application/json' \
+  --header 'User-Agent: insomnia/11.2.0' \
+  --data '{
+	"username": "goutham",
+	"email": "pratapagoutham@gmail.com",
+  "age": 6,
+  "gender": "Male",
+  "location": "Hyderabad",
+  "interests": "Tennis, Cricket",
+  "bio": "Engineer and Tennis player",
+	"profile_picture": "Somepic",
+	"created_at": "1749401365",
+	"updated_at": "1749401365"
+}'
+```
+
+<img width="879" alt="image" src="https://github.com/user-attachments/assets/4b3347d9-af8e-4935-a452-ded78a59a245" />
