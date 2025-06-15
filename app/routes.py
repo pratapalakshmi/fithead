@@ -13,35 +13,42 @@ def home():
     return 'Hello, Flask! (Blueprint)'
 
 
-@main.route('/about')
+@main.route('/about', methods=['GET'])
 def about():
-    return 'About page'
+    return jsonify({'message': 'About page'})
 
 
-@main.route('/contact')
+@main.route('/contact', methods=['GET'])
 def contact():
-    return 'Contact page'
-
-
-@main.route('/users')
-def users():
-    users = get_db_model('User').query.all()
-    return jsonify([user.to_dict() for user in users])
+    return jsonify({'message': 'Contact Details'})
 
 
 @main.route('/users/insert', methods=['POST'])
 def insert_user():
     user_data = request.json
     user_data['id'] = utils.generate_uuid()
-    user = db_adapter.insert_user_data(user_data)
-    get_db_session().add(user)
-    get_db_session().commit()
-    get_db_session().close()
-    user = db_adapter.get_user_data(user_data['id'])
-    return jsonify({'user_id': user.id})
+    try:
+        user = db_adapter.insert_user_data(user_data)
+        user = db_adapter.get_user_data(user_data['username'])
+        return jsonify(user)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
-@main.route('/users/<user_id>')
-def update_user(user_id):
-    user = get_db_model('User').query.filter_by(id=user_id).first()
-    return jsonify(user.to_dict())
+@main.route('/users/<user_name>', methods=['GET'])
+def get_user(user_name):
+    try:
+        user = db_adapter.get_user_data(user_name)
+        return jsonify(user)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@main.route('/users/<user_name>', methods=['PUT'])
+def update_user(user_name):
+    user_data = request.json
+    try:
+        updated_user = db_adapter.update_user_data(user_name, user_data)
+        return jsonify(updated_user)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

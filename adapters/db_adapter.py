@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from app import models
 from app import utils
 import time
+from sqlalchemy.inspection import inspect
 
 db = SQLAlchemy()
 
@@ -42,6 +43,9 @@ def insert_user_data(user_data):
         created_at=utils.get_current_timestamp(),
         updated_at=utils.get_current_timestamp(),
     )
+    get_db_session().add(user)
+    get_db_session().commit()
+    get_db_session().close()
     return user
 
 
@@ -70,9 +74,25 @@ def insert_workout_plan_exercise_data(workout_plan_exercise_data):
     )
 
 
-def get_user_data(user_id):
-    user = models.User.query.filter_by(id=user_id).first()
-    return user
+def get_user_data(user_name):
+    user = models.User.query.filter_by(username=user_name).first()
+    user_dict = {c.key: getattr(user, c.key)
+                 for c in inspect(user).mapper.column_attrs}
+    return user_dict
+
+
+def update_user_data(user_name, user_data):
+    user = models.User.query.filter_by(username=user_name).first()
+    for key, value in user_data.items():
+        setattr(user, key, value)
+    user.updated_at = utils.get_current_timestamp()
+    get_db_session().add(user)
+    get_db_session().commit()
+    get_db_session().close()
+    user = models.User.query.filter_by(username=user_name).first()
+    user_dict = {c.key: getattr(user, c.key)
+                 for c in inspect(user).mapper.column_attrs}
+    return user_dict
 
 
 def get_workout_data(workout_id):

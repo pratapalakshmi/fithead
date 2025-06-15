@@ -13,8 +13,6 @@ services:
 
   fithead:
     build: .
-    volumes:
-      - .:/app
     environment:
       - DATABASE_URL=postgresql://postgres:password@db:5432/postgres
     ports:
