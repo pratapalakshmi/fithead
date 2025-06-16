@@ -10,15 +10,17 @@ class User(db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    age = db.Column(db.Integer, nullable=False)
-    gender = db.Column(db.String(10), nullable=False)
+    gender = db.Column(db.String(10))
     location = db.Column(db.String(120), nullable=False)
-    interests = db.Column(db.String(255), nullable=False)
-    bio = db.Column(db.String(255), nullable=False)
-    profile_picture = db.Column(db.String(255), nullable=False)
+    interests = db.Column(db.String(255))
+    bio = db.Column(db.String(255))
+    profile_picture = db.Column(db.String(255))
     created_at = db.Column(db.Integer, nullable=False)
     updated_at = db.Column(db.Integer, nullable=False)
-    is_admin = db.Column(db.Boolean, nullable=False)
+    is_admin = db.Column(db.Boolean)
+    date_of_birth = db.Column(db.Date, nullable=False)
+    height = db.Column(db.Float)
+    weight = db.Column(db.Float)
     __repr__ = default_repr
 
 

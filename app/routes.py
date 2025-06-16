@@ -38,9 +38,10 @@ def users():
     return jsonify([user.id for user in users])
 
 
-@main.route('/users/insert', methods=['POST'])
+@main.route('/insert', methods=['POST'])
 def insert_user():
     user_data = request.json
+    user_data["date_of_birth"] = utils.convert_date_string(user_data.get("date_of_birth", ""))
     if "is_admin" not in user_data:
         user_data["is_admin"] = False
     try:
