@@ -16,6 +16,7 @@ RUN apt-get update \
        build-essential \
        libssl-dev \
        postgresql-client \
+       netcat-traditional \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies

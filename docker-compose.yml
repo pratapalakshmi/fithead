@@ -22,8 +22,8 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:password@db:5432/postgres
     ports:
-      - "5008:5000"
+      - "5008:5008"
     depends_on:
       - db
     volumes:
-      - ./fitness-data:/app/fitness-data
+      - ./:/app

@@ -18,6 +18,7 @@ class User(db.Model):
     profile_picture = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.Integer, nullable=False)
     updated_at = db.Column(db.Integer, nullable=False)
+    is_admin = db.Column(db.Boolean, nullable=False)
     __repr__ = default_repr
 
 
