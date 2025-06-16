@@ -26,6 +26,9 @@ RUN pip install --upgrade pip \
 # Copy project
 COPY . .
 
+# Make entrypoint script executable
+RUN chmod +x /app/entrypoint.sh
+
 # Expose port
 EXPOSE 5000
 
@@ -33,4 +36,4 @@ EXPOSE 5000
 ENV FLASK_APP=run.py
 
 # Run the Flask app
-CMD ["/bin/sh", "-c", "flask db init && flask db migrate -m 'Initial migration' && flask db upgrade && flask run --host=0.0.0.0"]
+ENTRYPOINT ["/app/entrypoint.sh"]

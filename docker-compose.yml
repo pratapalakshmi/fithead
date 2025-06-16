@@ -18,10 +18,11 @@ services:
 
   fithead:
     build: .
+    platform: linux/amd64
     environment:
       - DATABASE_URL=postgresql://postgres:password@db:5432/postgres
     ports:
-      - "5001:5000"
+      - "5008:5000"
     depends_on:
       - db
     volumes:
