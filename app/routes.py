@@ -62,10 +62,12 @@ def login():
 @jwt_required()
 def protected():
     current_user_id = get_jwt_identity()
-    return jsonify({'message': f'Hello user {current_user_id}!'}), 200
+    user = db_adapter.get_user_data_by_id(current_user_id)
+    return jsonify(user), 200
 
 
 @main.route('/users/<user_name>', methods=['GET'])
+@jwt_required()
 def get_user(user_name):
     try:
         user = db_adapter.get_user_data(user_name)
@@ -75,6 +77,7 @@ def get_user(user_name):
 
 
 @main.route('/users/<user_name>', methods=['PUT'])
+@jwt_required()
 def update_user(user_name):
     user_data = request.json
     try:

@@ -81,6 +81,12 @@ def get_user_data(user_name):
     return user_dict
 
 
+def get_user_data_by_id(user_id):
+    user = models.User.query.filter_by(id=user_id).first()
+    user_dict = {c.key: getattr(user, c.key)
+                 for c in inspect(user).mapper.column_attrs}
+    return user_dict
+
 def update_user_data(user_name, user_data):
     user = models.User.query.filter_by(username=user_name).first()
     for key, value in user_data.items():
