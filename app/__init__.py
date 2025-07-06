@@ -15,7 +15,8 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     # JWT configuration
-    app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'SecretKey')  # Change this in production
+    app.config['JWT_SECRET_KEY'] = os.environ.get(
+        'JWT_SECRET_KEY', 'SecretKey')  # Change this in production
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 3600  # 1 hour
 
     db.init_app(app)

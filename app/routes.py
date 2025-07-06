@@ -41,7 +41,6 @@ def users():
 @main.route('/insert', methods=['POST'])
 def insert_user():
     user_data = request.json
-    user_data["date_of_birth"] = utils.convert_date_string(user_data.get("date_of_birth", ""))
     if "is_admin" not in user_data:
         user_data["is_admin"] = False
     try:
@@ -51,6 +50,22 @@ def insert_user():
         return jsonify(user)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+@main.route('/userprofile', methods=['POST'])
+@jwt_required()
+def insert_user_profile():
+    user_data = request.json
+    current_user_id = get_jwt_identity()
+    try:
+        result = db_adapter.insert_user_profile_data(
+            user_data, current_user_id)
+        if result.get('error'):
+            return jsonify({'error': result.get('error')}), 400
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 @main.route('/login', methods=['POST'])
 def login():
@@ -77,7 +92,8 @@ def protected():
 @jwt_required()
 def get_user(user_name):
     current_user_id = get_jwt_identity()
-    current_user_is_admin = db_adapter.get_user_data_by_id(current_user_id).get("is_admin", False)
+    current_user_is_admin = db_adapter.get_user_data_by_id(
+        current_user_id).get("is_admin", False)
     try:
         user = db_adapter.get_user_data(user_name)
         if user.get("id", None) != current_user_id and not current_user_is_admin:
@@ -92,7 +108,8 @@ def get_user(user_name):
 def update_user(user_name):
     user_data = request.json
     current_user_id = get_jwt_identity()
-    current_user_is_admin = db_adapter.get_user_data_by_id(current_user_id).get("is_admin", False)
+    current_user_is_admin = db_adapter.get_user_data_by_id(
+        current_user_id).get("is_admin", False)
     try:
         user = db_adapter.get_user_data(user_name)
         if user.get("id", None) != current_user_id and not current_user_is_admin:

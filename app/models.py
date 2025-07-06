@@ -7,20 +7,32 @@ def default_repr(self): return f"<{self.__class__.__name__} id={self.id}>"
 
 class User(db.Model):
     id = db.Column(db.String(36), primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)
+    password = db.Column(db.String(255))
+    auth_provider = db.Column(db.String(20), nullable=False, default='local')
+    provider_user_id = db.Column(db.String(255))
+    is_admin = db.Column(db.Boolean)
+    created_at = db.Column(db.Integer, nullable=False)
+    updated_at = db.Column(db.Integer, nullable=False)
+    profile = db.relationship('UserProfile', backref='user', uselist=False)
+    __repr__ = default_repr
+
+
+class UserProfile(db.Model):
+    id = db.Column(db.String(36), primary_key=True)
+    user_id = db.Column(db.String(36), db.ForeignKey(
+        'user.id'), nullable=False, unique=True)
+    username = db.Column(db.String(80), unique=True)
     gender = db.Column(db.String(10))
-    location = db.Column(db.String(120), nullable=False)
+    location = db.Column(db.String(120))
     interests = db.Column(db.String(255))
     bio = db.Column(db.String(255))
     profile_picture = db.Column(db.String(255))
-    created_at = db.Column(db.Integer, nullable=False)
-    updated_at = db.Column(db.Integer, nullable=False)
-    is_admin = db.Column(db.Boolean)
-    date_of_birth = db.Column(db.Date, nullable=False)
+    date_of_birth = db.Column(db.Date)
     height = db.Column(db.Float)
     weight = db.Column(db.Float)
+    created_at = db.Column(db.Integer, nullable=False)
+    updated_at = db.Column(db.Integer, nullable=False)
     __repr__ = default_repr
 
 

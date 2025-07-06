@@ -29,24 +29,31 @@ def get_db_engine():
     return db.engine
 
 
-def insert_user_data(user_data):
-    user = models.User(
-        id=user_data['id'],
-        username=user_data['username'],
-        email=user_data['email'],
-        age=user_data['age'],
-        gender=user_data['gender'],
-        location=user_data['location'],
-        interests=user_data['interests'],
-        bio=user_data['bio'],
-        profile_picture=user_data['profile_picture'],
-        created_at=utils.get_current_timestamp(),
-        updated_at=utils.get_current_timestamp(),
-    )
-    get_db_session().add(user)
-    get_db_session().commit()
-    get_db_session().close()
-    return user
+def insert_user_profile_data(user_data, user_id):
+    try:
+        user = models.User.query.filter_by(id=user_id).first()
+        user_profile = models.UserProfile(
+            id=user.id,
+            user_id=user.id,
+            username=user_data['username'],
+            date_of_birth=utils.convert_date_string(
+                user_data['date_of_birth']),
+            gender=user_data['gender'],
+            location=user_data['location'],
+            interests=user_data['interests'],
+            bio=user_data['bio'],
+            height=user_data['height'],
+            weight=user_data['weight'],
+            profile_picture=user_data['profile_picture'],
+            created_at=utils.get_current_timestamp(),
+            updated_at=utils.get_current_timestamp(),
+        )
+        get_db_session().add(user_profile)
+        get_db_session().commit()
+        get_db_session().close()
+        return {'message': 'User profile created successfully'}
+    except Exception as e:
+        return {'error': str(e)}
 
 
 def insert_workout_data(workout_data):
@@ -86,6 +93,7 @@ def get_user_data_by_id(user_id):
     user_dict = {c.key: getattr(user, c.key)
                  for c in inspect(user).mapper.column_attrs}
     return user_dict
+
 
 def update_user_data(user_name, user_data):
     user = models.User.query.filter_by(username=user_name).first()
